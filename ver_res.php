@@ -48,7 +48,6 @@ if (!$res) {
       <p><strong>Edad:</strong> <?= $res['edad'] ?></p>
       <p><strong>Peso:</strong> <?= $res['peso'] ?></p>
       <p><strong>Raza:</strong> <?= $res['raza'] ?></p>
-      <p><strong>Origen:</strong> <?= $res['origen_tipo'] ?> <?= $res['origen'] ? "- " . $res['origen'] : '' ?></p>
       <p><strong>Alimentación:</strong> <?= $res['alimentacion'] ?></p>
       <p><strong>Vacunas:</strong> <?= $res['vacunas'] ?></p>
       <p><strong>Estado de Salud:</strong> <?= $res['salud'] ?></p>

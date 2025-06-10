@@ -40,7 +40,7 @@ if (!isset($_SESSION['usuario_id'])) {
     $reses = $conexion->query("SELECT r.*, u.nombre AS dueno FROM reses r JOIN usuarios u ON r.id_usuario = u.id WHERE r.vendido = 0 ORDER BY r.fecha_publicacion DESC");
     while ($res = $reses->fetch_assoc()):
     ?>
-    <div class="col-md-4 mb-4 res-item" data-info="<?php echo strtolower($res['edad'] . ' ' . $res['vacunas'] . ' ' . $res['salud'] . ' ' . $res['peso'] . ' ' . $res['alimentacion'] . ' ' . $res['origen'] . ' ' . $res['ubicacion']); ?>">
+    <div class="col-md-4 mb-4 res-item" data-info="<?php echo strtolower($res['edad'] . ' ' . $res['vacunas'] . ' ' . $res['salud'] . ' ' . $res['peso'] . ' ' . $res['alimentacion'] . ' ' . $res['ubicacion']); ?>">
       <div class="card h-100">
         <a href="ver_res.php?id=<?= $res['id'] ?>" title="Ver más información">
           <img src="<?= $res['imagen'] ?>" class="card-img-top" alt="Res" style="height: 220px; object-fit: cover; cursor: pointer;">
