@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - GanApp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="card-container">
+        <img src="https://img.icons8.com/ios/50/cow--v1.png" class="logo" alt="Logo">
+        <h2>Crear cuenta en GanApp</h2>
+
+        <form id="registroForm">
+            <label for="nombre">Nombre completo</label>
+            <input type="text" id="nombre" required>
+
+            <label for="correo">Correo</label>
+            <input type="email" id="correo" required>
+
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" required>
+
+            <label for="confirmar">Confirmar contraseña</label>
+            <input type="password" id="confirmar" required>
+
+            <button type="submit">Registrarse</button>
+            <p id="registroMsg"></p>
+
+            <p class="link">
+                ¿Ya tienes cuenta? <a href="login.html">Iniciar sesión</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registroForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const correo = document.getElementById('correo').value;
+            const contrasena = document.getElementById('contrasena').value;
+            const confirmar = document.getElementById('confirmar').value;
+
+            if (contrasena !== confirmar) {
+                document.getElementById('registroMsg').innerText = "Las contraseñas no coinciden.";
+                return;
+            }
+
+            const res = await fetch('registro.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `nombre=${nombre}&correo=${correo}&contrasena=${contrasena}`
+            });
+
+            const data = await res.text();
+            document.getElementById('registroMsg').innerText = data;
+        });
+    </script>
+</body>
+
+</html>

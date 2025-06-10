@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - GanApp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="card-container">
+        <img src="https://img.icons8.com/ios/50/cow--v1.png" class="logo" alt="Logo">
+        <h2>GanApp</h2>
+
+        <form id="loginForm">
+            <label for="loginCorreo">Correo</label>
+            <input type="email" id="loginCorreo" required>
+
+            <label for="loginContrasena">Contraseña</label>
+            <input type="password" id="loginContrasena" required>
+
+            <div class="extra">
+                <label><input type="checkbox"> Recuérdame</label>
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit">Iniciar sesión</button>
+            <p id="loginMsg"></p>
+
+            <p class="link">
+                ¿No tienes cuenta? <a href="register.html">Crear cuenta</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const correo = document.getElementById('loginCorreo').value;
+            const contrasena = document.getElementById('loginContrasena').value;
+
+            const res = await fetch('login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `correo=${correo}&contrasena=${contrasena}`
+            });
+
+            const data = await res.text();
+            document.getElementById('loginMsg').innerText = data;
+            if (data.includes("Bienvenido")) window.location.href = "index.php";
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GanApp</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<!-- Contenido Principal -->
+<header class="bg-success text-white text-center py-5">
+    <h1>GanApp</h1>
+    <p class="text-center">Facilita la compra y venta de reses con información detallada y una búsqueda inteligente.</p>
+</header>
+
+<body>
+    <!-- Barra de Navegación -->
+    <nav class=" navbar navbar-expand-lg navbar-dark bg-success sticky-top ">
+        <div class="container-fluid ">
+            <a class="navbar-brand " href="# ">Market Reses</a>
+            <button class="navbar-toggler " type="button " data-bs-toggle="collapse " data-bs-target="#navbarNav " aria-controls="navbarNav " aria-expanded="false " aria-label="Toggle navigation ">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end " id="navbarNav ">
+                <ul class="navbar-nav ">
+                    <li class="nav-item ">
+                        <a class="nav-link active " href="#funciones ">Funciones</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="#beneficios ">Beneficios</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="#objetivo ">Objetivo</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="#contacto ">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Sección de Búsqueda de Reses -->
+    <section id="busqueda " class="py-5 container ">
+        <p class="lead "> Asistente Virtual para Compras y Ventas de Reses</p>
+        <h2 class="text-center mb-4 ">Búsqueda de Información Detallada de Reses</h2>
+        <div class="row justify-content-center ">
+            <div class="col-md-6 ">
+                <!-- Barra de Búsqueda -->
+                <input type="text " id="searchBar " class="form-control " placeholder="Buscar por edad, tratamientos, salud, alimentación, origen... ">
+            </div>
+        </div>
+
+        <!-- Lista de Reses -->
+        <div class="row mt-4 " id="reses-list ">
+            <div class="col-md-4 res-item " data-info="Edad: 2 años, Vacunas: Rabia Bovina y Fiebre Aftosa, Salud: Buena, Peso: 500kg, Alimentación: Pasto, Origen: Sucre ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #1</h5>
+
+                        <p class="card-text ">Edad: 2 años</p>
+                        <p class="card-text ">Vacunas: Rabia Bovina y Fiebre Aftosa</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 500kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto</p>
+                        <p class="card-text ">Origen: Sucre</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 3 años, Vacunas: Rabia Bovina, Salud: Regular, Peso: 450kg, Alimentación: Mixta, Origen: Cordoba ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #2</h5>
+                        <p class="card-text ">Edad: 3 años</p>
+                        <p class="card-text ">Vacunas: Rabia Bovina</p>
+                        <p class="card-text ">Estado de Salud: Regular</p>
+                        <p class="card-text ">Peso: 450kg</p>
+                        <p class="card-text ">Historial de Alimentación: Mixta</p>
+                        <p class="card-text ">Origen: Cordoba</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 1 año, Vacunas: Fiebre Aftosa, Salud: Excelente, Peso: 400kg, Alimentación: Granos, Origen: Antioquia ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #3</h5>
+                        <p class="card-text ">Edad: 1 año</p>
+                        <p class="card-text ">Vacunas: Fiebre Aftosa</p>
+                        <p class="card-text ">Estado de Salud: Excelente</p>
+                        <p class="card-text ">Peso: 400kg</p>
+                        <p class="card-text ">Historial de Alimentación: Granos</p>
+                        <p class="card-text ">Origen: Antioquia</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 res-item " data-info="Edad: 4 años, Vacunas: Fiebre Aftosa, Salud: Buena, Peso: 600kg, Alimentación: Pasto, Origen: Cundinamarca ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #4</h5>
+                        <p class="card-text ">Edad: 4 años</p>
+                        <p class="card-text ">Vacunas: Fiebre Aftosa</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 600kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto</p>
+                        <p class="card-text ">Origen: Cundinamarca</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 2 años, Vacunas: Carbón Sintomático, Salud: Excelente, Peso: 520kg, Alimentación: Granos, Origen: Santander ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #5</h5>
+                        <p class="card-text ">Edad: 2 años</p>
+                        <p class="card-text ">Vacunas: Carbón Sintomático</p>
+                        <p class="card-text ">Estado de Salud: Excelente</p>
+                        <p class="card-text ">Peso: 520kg</p>
+                        <p class="card-text ">Historial de Alimentación: Granos</p>
+                        <p class="card-text ">Origen: Santander</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 3 años, Vacunas: Rabia Bovina, Salud: Buena, Peso: 580kg, Alimentación: Pasto y Suplementos, Origen: Valle del Cauca ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #6</h5>
+                        <p class="card-text ">Edad: 3 años</p>
+                        <p class="card-text ">Vacunas: Rabia Bovina</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 580kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto y Suplementos</p>
+                        <p class="card-text ">Origen: Valle del Cauca</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 1.5 años, Vacunas: Fiebre Aftosa y Clostridiosis, Salud: Regular, Peso: 470kg, Alimentación: Pasto, Origen: Cordoba ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #7</h5>
+                        <p class="card-text ">Edad: 1.5 años</p>
+                        <p class="card-text ">Vacunas: Fiebre Aftosa y Clostridiosis</p>
+                        <p class="card-text ">Estado de Salud: Regular</p>
+                        <p class="card-text ">Peso: 470kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto</p>
+                        <p class="card-text ">Origen: Cordoba</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 5 años, Vacunas: Carbón Sintomático y Rabia Bovina, Salud: Excelente, Peso: 650kg, Alimentación: Pasto, Origen: Boyacá ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #8</h5>
+                        <p class="card-text ">Edad: 5 años</p>
+                        <p class="card-text ">Vacunas: Carbón Sintomático y Rabia Bovina</p>
+                        <p class="card-text ">Estado de Salud: Excelente</p>
+                        <p class="card-text ">Peso: 650kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto</p>
+                        <p class="card-text ">Origen: Boyacá</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 2.5 años, Vacunas: Fiebre Aftosa, Salud: Buena, Peso: 530kg, Alimentación: Granos y Suplementos, Origen: Cordoba ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #9</h5>
+                        <p class="card-text ">Edad: 2.5 años</p>
+                        <p class="card-text ">Vacunas: Fiebre Aftosa</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 530kg</p>
+                        <p class="card-text ">Historial de Alimentación: Granos y Suplementos</p>
+                        <p class="card-text ">Origen: Cordoba</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 3 años, Vacunas: Brucelosis y Carbón Sintomático, Salud: Buena, Peso: 550kg, Alimentación: Pasto, Origen: Sucre ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #10</h5>
+                        <p class="card-text ">Edad: 3 años</p>
+                        <p class="card-text ">Vacunas: Brucelosis y Carbón Sintomático</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 550kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto</p>
+                        <p class="card-text ">Origen: Sucre</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 1 año, Vacunas: Rabia Bovina, Salud: Excelente, Peso: 400kg, Alimentación: Pasto y Granos, Origen: Nariño ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #11</h5>
+                        <p class="card-text ">Edad: 1 año</p>
+                        <p class="card-text ">Vacunas: Rabia Bovina</p>
+                        <p class="card-text ">Estado de Salud: Excelente</p>
+                        <p class="card-text ">Peso: 400kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto y Granos</p>
+                        <p class="card-text ">Origen: Nariño</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 2 años, Vacunas: Fiebre Aftosa y Brucelosis, Salud: Buena, Peso: 510kg, Alimentación: Granos, Origen: Cauca ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #12</h5>
+                        <p class="card-text ">Edad: 2 años</p>
+                        <p class="card-text ">Vacunas: Fiebre Aftosa y Brucelosis</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 510kg</p>
+                        <p class="card-text ">Historial de Alimentación: Granos</p>
+                        <p class="card-text ">Origen: Cauca</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 3 años, Vacunas: Carbón Sintomático, Salud: Excelente, Peso: 550kg, Alimentación: Pasto y Suplementos, Origen: Sucre ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #13</h5>
+                        <img src="C:\Users\José Avilés M\Desktop\VS CODE\PROYECTO\Reses/Romo.jpeg " alt="Imagen de Res #13 " class="img-fluid ">
+                        <p class="card-text ">Edad: 3 años</p>
+                        <p class="card-text ">Vacunas: Carbón Sintomático</p>
+                        <p class="card-text ">Estado de Salud: Excelente</p>
+                        <p class="card-text ">Peso: 550kg</p>
+                        <p class="card-tex ">Historial de Alimentación: Pasto y Suplementos</p>
+                        <p class="card-text ">Origen: Sucre</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 3 años, Vacunas: Fiebre Aftosa y Brucelosis, Salud: Buena, Peso: 590kg, Alimentación: Pasto, Granos y Suplementos, Origen: Córdoba ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #14</h5>
+                        <img src="C:\Users\José Avilés M\Desktop\VS CODE\PROYECTO\Reses/Brahaman.jpeg " alt="Imagen de Res #14 " class="img-fluid ">
+                        <p class="card-text ">Edad: 3 años</p>
+                        <p class="card-text ">Vacunas: Fiebre Aftosa y Brucelosis</p>
+                        <p class="card-text ">Estado de Salud: Buena</p>
+                        <p class="card-text ">Peso: 590kg</p>
+                        <p class="card-text ">Historial de Alimentación: Pasto, Granos y Suplementos</p>
+                        <p class="card-text ">Origen: Córdoba</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 res-item " data-info="Edad: 2.5 años, Vacunas: Rabia Bovina y Carbón Sintomático, Salud: Excelente, Peso: 530kg, Alimentación: Granos y Suplementos, Origen: Boyacá ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <h5 class="card-title ">Res #15</h5>
+                        <img src="C:\Users\José Avilés M\Desktop\VS CODE\PROYECTO\Reses/GyrLechero.jpg " alt="Imagen de Res #15 " class="img-fluid ">
+                        <p class="card-text ">Edad: 2.5 años</p>
+                        <p class="card-text ">Vacunas: Rabia Bovina y Carbón Sintomático</p>
+                        <p class="card-text ">Estado de Salud: Excelente</p>
+                        <p class="card-text ">Peso: 530kg</p>
+                        <p class="card-text ">Historial de Alimentación: Granos y Suplementos</p>
+                        <p class="card-text ">Origen: Boyacá</p>
+                        <input type="checkbox " class="compare-checkbox " data-res="1 "> Seleccionar para comparar
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center my-4 ">
+            <button id="compare-btn " class="btn btn-success " disabled>Comparar Reses</button>
+        </div>
+
+
+
+    </section>
+
+    <!-- Secciones restantes -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js "></script>
+
+    <!-- JavaScript para la barra de búsqueda -->
+    <script>
+        document.getElementById('searchBar').addEventListener('keyup', function() {
+            const query = this.value.toLowerCase();
+            const resItems = document.querySelectorAll('.res-item');
+
+            resItems.forEach(function(item) {
+                const info = item.getAttribute('data-info').toLowerCase();
+                if (info.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+<section id="comparacion " class="py-5 container ">
+    <h2 class="text-center mb-4 ">Comparación de Reses</h2>
+    <div class="row justify-content-center ">
+        <div class="col-md-12 ">
+            <p class="text-center ">Selecciona dos reses para comparar su información</p>
+            <section id="comparison-result " class="py-5 container " style="display:none; ">
+                <h2 class="text-center mb-4 ">Comparación de Reses</h2>
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Res #1</th>
+                            <th>Res #2</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparison-table-body ">
+                        <!-- Las características comparadas aparecerán aquí -->
+                    </tbody>
+                </table>
+            </section>
+
+        </div>
+    </div>
+</section>
+
+<section id="contacto " class="py-5 bg-light ">
+    <div class="container ">
+        <h2 class="text-center mb-4 ">Contacto</h2>
+        <form>
+            <div class="mb-3 ">
+                <label for="name " class="form-label ">Nombre</label>
+                <input type="text " class="form-control " id="name " placeholder="Tu nombre " required>
+            </div>
+            <div class="mb-3 ">
+                <label for="email " class="form-label ">Correo Electrónico</label>
+                <input type="email " class="form-control " id="email " placeholder="Tu correo electrónico " required>
+            </div>
+            <div class="mb-3 ">
+                <label for="message " class="form-label ">Mensaje</label>
+                <textarea class="form-control " id="message " rows="5 " placeholder="Escribe tu mensaje aquí... " required></textarea>
+            </div>
+            <button type="submit " class="btn btn-success ">Enviar</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    const checkboxes = document.querySelectorAll('.compare-checkbox');
+    const compareBtn = document.getElementById('compare-btn');
+    const comparisonResult = document.getElementById('comparison-result');
+    const comparisonTableBody = document.getElementById('comparison-table-body');
+
+    let selectedReses = [];
+
+    // Función para habilitar/deshabilitar el botón de comparación
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const resNumber = this.getAttribute('data-res');
+            const resData = this.closest('.res-item').getAttribute('data-info').split(',');
+
+            if (this.checked) {
+                if (selectedReses.length < 2) {
+                    selectedReses.push({
+                        resNumber,
+                        resData
+                    });
+                } else {
+                    this.checked = false;
+                    alert('Solo puedes comparar dos reses a la vez.');
+                }
+            } else {
+                selectedReses = selectedReses.filter(res => res.resNumber !== resNumber);
+            }
+
+            // Habilitar/deshabilitar el botón de comparación
+            compareBtn.disabled = selectedReses.length !== 2;
+        });
+    });
+
+    // Función para mostrar la comparación
+    compareBtn.addEventListener('click', function() {
+        comparisonResult.style.display = 'block';
+
+        // Limpiar la tabla de comparación anterior
+        comparisonTableBody.innerHTML = '';
+
+        // Añadir las características a comparar
+        const characteristics = ['Edad', 'Vacunas', 'Salud', 'Peso', 'Alimentación', 'Origen'];
+
+        characteristics.forEach((characteristic, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${characteristic}</td>
+                <td>${selectedReses[0].resData[index]}</td>
+                <td>${selectedReses[1].resData[index]}</td>
+            `;
+            comparisonTableBody.appendChild(row);
+        });
+    });
+</script>
