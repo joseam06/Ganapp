@@ -1,57 +1,71 @@
 <?php
 session_start();
-require 'db.php';
+include 'db.php';
 
-if (!isset($_SESSION['id_usuario'])) {
-    echo "Debes iniciar sesión.";
-    exit;
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.html");
+    exit();
 }
 
-$id_usuario = $_SESSION['id_usuario'];
+$id = $_POST['id'] ?? null;
+if (!$id) {
+    echo "ID inválido.";
+    exit();
+}
 
-// Recibir datos del formulario
-$id = $_POST['id'];
-$clasificacion = $_POST['clasificacion'];
-$tipo = $_POST['tipo'];
-$edad = $_POST['edad'];
-$peso = $_POST['peso'];
-$raza = $_POST['raza'];
-$origen_tipo = $_POST['origen_tipo'];
-$origen = $_POST['origen'] ?? '';
-$alimentacion = $_POST['alimentacion'];
-$ubicacion = $_POST['ubicacion'];
-$vacunas = $_POST['vacunas'];
-
-// Validar que la res sea del usuario
-$stmt = $conn->prepare("SELECT * FROM reses WHERE id = ? AND id_usuario = ?");
-$stmt->execute([$id, $id_usuario]);
-$res = $stmt->fetch();
+$sql = "SELECT imagen FROM reses WHERE id = ? AND id_usuario = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("ii", $id, $_SESSION['usuario_id']);
+$stmt->execute();
+$res = $stmt->get_result()->fetch_assoc();
 
 if (!$res) {
-    echo "No tienes permiso para actualizar esta publicación.";
-    exit;
+    echo "No autorizado o no encontrado.";
+    exit();
 }
 
-// Manejar la imagen si se sube una nueva
-$nueva_imagen = $_FILES['imagen']['name'];
-if ($nueva_imagen) {
-    $imagen_tmp = $_FILES['imagen']['tmp_name'];
-    $carpeta = 'img/reses/';
-    $nombre_final = uniqid() . '_' . $nueva_imagen;
-    move_uploaded_file($imagen_tmp, $carpeta . $nombre_final);
-    $imagen_path = $carpeta . $nombre_final;
+// Procesar nueva imagen si se cargó
+$rutaImagen = $res['imagen'];
+if (!empty($_FILES["imagen"]["name"])) {
+    $directorio = "img/reses/";
+    $nombreImagen = uniqid() . "_" . basename($_FILES["imagen"]["name"]);
+    $rutaNueva = $directorio . $nombreImagen;
 
-    // Actualizar con imagen
-    $sql = "UPDATE reses SET clasificacion=?, tipo=?, edad=?, peso=?, raza=?, origen_tipo=?, origen=?, alimentacion=?, ubicacion=?, vacunas=?, imagen=? WHERE id=? AND id_usuario=?";
-    $params = [$clasificacion, $tipo, $edad, $peso, $raza, $origen_tipo, $origen, $alimentacion, $ubicacion, $vacunas, $imagen_path, $id, $id_usuario];
+    if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaNueva)) {
+        $rutaImagen = $rutaNueva;
+    }
+}
+
+// Actualizar la res
+$sql = "UPDATE reses SET
+    clasificacion = ?, tipo = ?, edad = ?, peso = ?, raza = ?,
+    origen_tipo = ?, origen = ?, alimentacion = ?, ubicacion = ?,
+    vacunas = ?, salud = ?, imagen = ?
+    WHERE id = ? AND id_usuario = ?";
+
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param(
+    "sssssssssssiii",
+    $_POST['clasificacion'],
+    $_POST['tipo'],
+    $_POST['edad'],
+    $_POST['peso'],
+    $_POST['raza'],
+    $_POST['origen_tipo'],
+    $_POST['origen'],
+    $_POST['alimentacion'],
+    $_POST['ubicacion'],
+    $_POST['vacunas'],
+    $_POST['salud'],
+    $rutaImagen,
+    $id,
+    $_SESSION['usuario_id']
+);
+
+if ($stmt->execute()) {
+    header("Location: index.php?editado=ok");
+    exit();
 } else {
-    // Actualizar sin cambiar imagen
-    $sql = "UPDATE reses SET clasificacion=?, tipo=?, edad=?, peso=?, raza=?, origen_tipo=?, origen=?, alimentacion=?, ubicacion=?, vacunas=? WHERE id=? AND id_usuario=?";
-    $params = [$clasificacion, $tipo, $edad, $peso, $raza, $origen_tipo, $origen, $alimentacion, $ubicacion, $vacunas, $id, $id_usuario];
+    echo "Error al actualizar: " . $stmt->error;
 }
-
-$stmt = $conn->prepare($sql);
-$stmt->execute($params);
-
-echo "Publicación actualizada correctamente. <a href='mis_publicaciones.php'>Volver a mis publicaciones</a>";
 ?>

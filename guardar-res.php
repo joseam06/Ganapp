@@ -62,37 +62,37 @@ if ($tipo_publicacion === 'lote') {
     );
 } else {
     // Guardar res individual
-    $raza = $_POST['raza'] ?? '';
+   $raza = $_POST['raza'] ?? '';
 
-    $sql = "INSERT INTO reses (
-        edad, vacunas, salud, peso, alimentacion,
-        origen, ubicacion, imagen, id_usuario,
-        fecha_publicacion, vendido,
-        clasificacion, tipo, raza, origen_tipo
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0, ?, ?, ?, ?)";
+$sql = "INSERT INTO reses (
+    edad, vacunas, salud, peso, alimentacion,
+    origen, ubicacion, imagen, id_usuario,
+    clasificacion, tipo, raza, origen_tipo
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $stmt = $conexion->prepare($sql);
-    if (!$stmt) {
-        echo "Error en prepare (res): " . $conexion->error;
-        exit();
-    }
+$stmt = $conexion->prepare($sql);
+if (!$stmt) {
+    echo "Error en prepare (res): " . $conexion->error;
+    exit();
+}
 
-    $stmt->bind_param(
-        "ssssssssisssss",
-        $edad,         // s
-        $vacunas,      // s
-        $salud,        // s
-        $peso,         // s
-        $alimentacion, // s
-        $origen,       // s
-        $ubicacion,    // s
-        $rutaImagen,   // s
-        $usuario_id,   // i
-        $clasificacion,// s
-        $tipo,         // s
-        $raza,         // s
-        $origen_tipo   // s
-    );
+$stmt->bind_param(
+    "ssssssssissss",
+    $edad,
+    $vacunas,
+    $salud,
+    $peso,
+    $alimentacion,
+    $origen,
+    $ubicacion,
+    $rutaImagen,
+    $usuario_id,
+    $clasificacion,
+    $tipo,
+    $raza,
+    $origen_tipo
+);
+
 }
 
 

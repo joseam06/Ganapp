@@ -1,119 +1,127 @@
 <?php
 session_start();
-require 'db.php';
-include 'navbar.php';
-
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.html");
-    exit;
+    exit();
 }
 
-$id_usuario = $_SESSION['id_usuario'];
-$id_res = $_GET['id'] ?? null;
+include 'db.php';
 
-if (!$id_res) {
-    echo "ID no proporcionado.";
-    exit;
+$id = $_GET['id'] ?? null;
+
+if (!$id) {
+    echo "ID inválido";
+    exit();
 }
 
-// Verificar que la res le pertenezca al usuario
-$stmt = $conn->prepare("SELECT * FROM reses WHERE id = ? AND id_usuario = ?");
-$stmt->execute([$id_res, $id_usuario]);
-$res = $stmt->fetch();
+$sql = "SELECT * FROM reses WHERE id = ? AND id_usuario = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("ii", $id, $_SESSION['usuario_id']);
+$stmt->execute();
+$res = $stmt->get_result()->fetch_assoc();
 
 if (!$res) {
-    echo "No tienes permiso para editar esta publicación.";
-    exit;
+    echo "Res no encontrada o no tienes permiso.";
+    exit();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Editar Res - GanApp</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Editar Res - GanApp</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="card-container">
-        <h2>Editar publicación de Res</h2>
-        <form action="actualizar_res.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<?= $res['id'] ?>">
+<?php include 'navbar.php'; ?>
 
-            <label>Clasificación</label>
-            <select name="clasificacion" onchange="cargarTipos()" id="clasificacion" required>
-                <option value="">Selecciona</option>
-                <option value="primera" <?= $res['clasificacion'] === 'primera' ? 'selected' : '' ?>>Primera</option>
-                <option value="segunda" <?= $res['clasificacion'] === 'segunda' ? 'selected' : '' ?>>Segunda</option>
-            </select>
+<div class="container mt-5" style="max-width: 600px;">
+  <h2 class="mb-4 text-center">Editar Res</h2>
 
-            <label>Tipo</label>
-            <select name="tipo" id="tipo" required>
-                <option value="<?= $res['tipo'] ?>"><?= $res['tipo'] ?></option>
-            </select>
+  <form action="actualizar_res.php" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="<?= $res['id'] ?>">
 
-            <label>Edad</label>
-            <input type="text" name="edad" value="<?= $res['edad'] ?>" required>
+    <?php
+    function selected($val, $opt) {
+        return $val === $opt ? 'selected' : '';
+    }
+    ?>
 
-            <label>Peso</label>
-            <input type="text" name="peso" value="<?= $res['peso'] ?>" required>
-
-            <label>Raza</label>
-            <input type="text" name="raza" value="<?= $res['raza'] ?>" required>
-
-            <label>Origen</label>
-            <select name="origen_tipo" id="origen_tipo" onchange="mostrarOrigenGenetico()" required>
-                <option value="">Selecciona</option>
-                <option value="comercial" <?= $res['origen_tipo'] === 'comercial' ? 'selected' : '' ?>>Línea Comercial</option>
-                <option value="genetico" <?= $res['origen_tipo'] === 'genetico' ? 'selected' : '' ?>>Con antecedentes genéticos</option>
-            </select>
-
-            <div id="origen_genetico_extra" style="display:<?= $res['origen_tipo'] === 'genetico' ? 'block' : 'none' ?>">
-                <label>Detalle del origen genético</label>
-                <textarea name="origen"><?= $res['origen'] ?></textarea>
-            </div>
-
-            <label>Alimentación</label>
-            <textarea name="alimentacion" required><?= $res['alimentacion'] ?></textarea>
-
-            <label>Zona / Ubicación</label>
-            <input type="text" name="ubicacion" value="<?= $res['ubicacion'] ?>" required>
-
-            <label>Vacunas</label>
-            <textarea name="vacunas" required><?= $res['vacunas'] ?></textarea>
-
-            <label>Imagen (sube una nueva si deseas reemplazar)</label>
-            <input type="file" name="imagen" accept="image/*">
-
-            <button type="submit">Actualizar publicación</button>
-        </form>
+    <div class="mb-3">
+      <label>Clasificación</label>
+      <select name="clasificacion" class="form-select" required>
+        <option value="primera" <?= selected($res['clasificacion'], 'primera') ?>>Primera</option>
+        <option value="segunda" <?= selected($res['clasificacion'], 'segunda') ?>>Segunda</option>
+      </select>
     </div>
 
-<script>
-function cargarTipos() {
-    const clasificacion = document.getElementById("clasificacion").value;
-    const tipoSelect = document.getElementById("tipo");
-    tipoSelect.innerHTML = "";
+    <div class="mb-3">
+      <label>Tipo</label>
+      <select name="tipo" class="form-select" required>
+        <?php foreach (['ML','MC','TO','BM','HL','HV','VP','VE'] as $tipo): ?>
+          <option value="<?= $tipo ?>" <?= selected($res['tipo'], $tipo) ?>><?= $tipo ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
 
-    let tipos = [];
-    if (clasificacion === "primera") {
-        tipos = ["ML", "MC", "TO", "BM", "HL", "HV", "VP", "VE"];
-    } else if (clasificacion === "segunda") {
-        tipos = ["ML", "MC", "HL", "HV", "VP", "VE"];
-    }
+    <div class="mb-3">
+      <label>Edad</label>
+      <input type="text" name="edad" class="form-control" value="<?= $res['edad'] ?>" required>
+    </div>
 
-    tipos.forEach(tipo => {
-        const option = document.createElement("option");
-        option.value = tipo;
-        option.text = tipo;
-        tipoSelect.appendChild(option);
-    });
-}
+    <div class="mb-3">
+      <label>Peso</label>
+      <input type="text" name="peso" class="form-control" value="<?= $res['peso'] ?>" required>
+    </div>
 
-function mostrarOrigenGenetico() {
-    const tipo = document.getElementById("origen_tipo").value;
-    document.getElementById("origen_genetico_extra").style.display = tipo === "genetico" ? "block" : "none";
-}
-</script>
+    <div class="mb-3">
+      <label>Raza</label>
+      <input type="text" name="raza" class="form-control" value="<?= $res['raza'] ?>" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Origen</label>
+      <select name="origen_tipo" class="form-select" required>
+        <option value="comercial" <?= selected($res['origen_tipo'], 'comercial') ?>>Línea Comercial</option>
+        <option value="genetico" <?= selected($res['origen_tipo'], 'genetico') ?>>Antecedente Genético</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label>Detalle de Origen</label>
+      <textarea name="origen" class="form-control"><?= $res['origen'] ?></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Alimentación</label>
+      <textarea name="alimentacion" class="form-control"><?= $res['alimentacion'] ?></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Ubicación</label>
+      <input type="text" name="ubicacion" class="form-control" value="<?= $res['ubicacion'] ?>" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Vacunas</label>
+      <textarea name="vacunas" class="form-control"><?= $res['vacunas'] ?></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Estado de Salud</label>
+      <input type="text" name="salud" class="form-control" value="<?= $res['salud'] ?>" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Imagen (opcional)</label>
+      <input type="file" name="imagen" class="form-control" accept="image/*">
+      <small>Si no seleccionas imagen, se mantendrá la actual.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+  </form>
+</div>
 </body>
 </html>
