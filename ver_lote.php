@@ -43,18 +43,21 @@ if (!$lote) {
   <div class="card mx-auto" style="max-width: 700px;">
     <img src="<?= $lote['imagen'] ?>" class="card-img-top" style="height: 300px; object-fit: cover;">
     <div class="card-body">
-      <p><strong>Cantidad de reses:</strong> <?= $lote['cantidad'] ?></p>
-      <p><strong>Edad promedio:</strong> <?= $lote['edad_promedio'] ?></p>
-      <p><strong>Peso promedio:</strong> <?= $lote['peso_promedio'] ?></p>
-      <p><strong>Salud general:</strong> <?= $lote['salud_general'] ?></p>
-      <p><strong>Alimentación:</strong> <?= $lote['alimentacion'] ?></p>
-      <p><strong>Origen:</strong> <?= $lote['origen'] ?></p>
-      <p><strong>Ubicación:</strong> <?= $lote['ubicacion'] ?></p>
-      <hr>
-      <h5 class="text-primary">Información del Vendedor</h5>
-      <p><strong>Nombre:</strong> <?= $lote['nombre'] ?></p>
-      <p><strong>Correo:</strong> <?= $lote['correo'] ?></p>
-    </div>
+  <p><strong>Clasificación:</strong> <?= ucfirst($lote['clasificacion'] ?? 'No definido') ?></p>
+  <p><strong>Tipo:</strong> <?= $lote['tipo'] ?? 'No definido' ?></p>
+  <p><strong>Cantidad de reses:</strong> <?= $lote['cantidad'] ?></p>
+  <p><strong>Edad promedio:</strong> <?= $lote['edad_promedio'] ?></p>
+  <p><strong>Peso promedio:</strong> <?= $lote['peso_promedio'] ?></p>
+  <p><strong>Salud general:</strong> <?= $lote['salud_general'] ?></p>
+  <p><strong>Alimentación:</strong> <?= $lote['alimentacion'] ?></p>
+  <p><strong>Origen:</strong> <?= $lote['origen'] ?></p>
+  <p><strong>Ubicación:</strong> <?= $lote['ubicacion'] ?></p>
+  <hr>
+  <h5 class="text-primary">Información del Vendedor</h5>
+  <p><strong>Nombre:</strong> <?= $lote['nombre'] ?></p>
+  <p><strong>Correo:</strong> <?= $lote['correo'] ?></p>
+</div>
+
   </div>
 </div>
 </body>
