@@ -1,23 +1,47 @@
 <?php
 session_start();
-require 'db.php';
-
-if (!isset($_SESSION['id_usuario'])) {
-    echo "Debes iniciar sesión.";
-    exit;
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.html");
+    exit();
 }
 
-$id_usuario = $_SESSION['id_usuario'];
-$id_res = $_GET['id'] ?? null;
+include 'db.php';
 
-if (!$id_res) {
-    echo "ID no proporcionado.";
-    exit;
+if (!isset($_GET['id'])) {
+    echo "ID de res no especificado.";
+    exit();
 }
 
-$stmt = $conn->prepare("DELETE FROM reses WHERE id = ? AND id_usuario = ?");
-$stmt->execute([$id_res, $id_usuario]);
+$id = intval($_GET['id']);
+$usuario_id = $_SESSION['usuario_id'];
 
-header("Location: mis_publicaciones.php");
-exit;
+// Verificar propiedad y obtener imagen
+$sql = "SELECT imagen FROM reses WHERE id = ? AND id_usuario = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("ii", $id, $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+if ($resultado->num_rows !== 1) {
+    echo "Res no encontrada o no autorizada.";
+    exit();
+}
+
+$res = $resultado->fetch_assoc();
+$imagen = $res['imagen'];
+
+// Eliminar de la base de datos
+$delete = $conexion->prepare("DELETE FROM reses WHERE id = ? AND id_usuario = ?");
+$delete->bind_param("ii", $id, $usuario_id);
+$delete->execute();
+
+// Eliminar imagen
+if ($imagen && file_exists($imagen)) {
+    unlink($imagen);
+}
+
+// ...
+header("Location: mis_publicaciones.php?eliminado=res");
+exit();
+
 ?>

@@ -63,7 +63,8 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-    header("Location: index.php?editado=ok");
+    header("Location: mis_publicaciones.php?actualizado=res");
+
     exit();
 } else {
     echo "Error al actualizar: " . $stmt->error;

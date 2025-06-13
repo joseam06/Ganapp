@@ -28,6 +28,7 @@
   </span>
   <ul class="dropdown-menu" aria-labelledby="userDropdown">
     <li><a class="dropdown-item" href="perfil.php">Mi Perfil</a></li>
+    <li><a class="dropdown-item" href="mis_publicaciones.php">Mis publicaciones</a></li>
     <li><a class="dropdown-item" href="mis_compras.php">Mis Compras</a></li>
     <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
   </ul>

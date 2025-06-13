@@ -1,48 +1,104 @@
 <?php
 session_start();
-require 'db.php';
-
-if (!isset($_SESSION['id_usuario'])) {
-    echo "Debes iniciar sesión.";
-    exit;
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.html");
+    exit();
 }
 
-$id_usuario = $_SESSION['id_usuario'];
-$id = $_POST['id'];
-$edad_promedio = $_POST['edad_promedio'];
-$peso_promedio = $_POST['peso_promedio'];
-$cantidad = $_POST['cantidad'];
-$alimentacion = $_POST['alimentacion'];
-$vacuna = $_POST['vacuna'];
-$ubicacion = $_POST['ubicacion'];
-$origen = $_POST['origen'];
+include 'db.php';
 
-$stmt = $conn->prepare("SELECT * FROM lotes WHERE id = ? AND id_usuario = ?");
-$stmt->execute([$id, $id_usuario]);
-$lote = $stmt->fetch();
-
-if (!$lote) {
-    echo "No tienes permiso para actualizar este lote.";
-    exit;
+if (!isset($_POST['id'])) {
+    echo "ID de lote no especificado.";
+    exit();
 }
 
-$nueva_imagen = $_FILES['imagen']['name'];
-if ($nueva_imagen) {
-    $imagen_tmp = $_FILES['imagen']['tmp_name'];
-    $carpeta = 'img/reses/';
-    $nombre_final = uniqid() . '_' . $nueva_imagen;
-    move_uploaded_file($imagen_tmp, $carpeta . $nombre_final);
-    $imagen_path = $carpeta . $nombre_final;
+$id = intval($_POST['id']);
+$usuario_id = $_SESSION['usuario_id'];
 
-    $sql = "UPDATE lotes SET edad_promedio=?, peso_promedio=?, cantidad=?, alimentacion=?, salud_general=?, ubicacion=?, origen=?, imagen=? WHERE id=? AND id_usuario=?";
-    $params = [$edad_promedio, $peso_promedio, $cantidad, $alimentacion, $vacuna, $ubicacion, $origen, $imagen_path, $id, $id_usuario];
+// Verificar que el lote pertenezca al usuario
+$verificar = $conexion->prepare("SELECT imagen FROM lotes WHERE id = ? AND id_usuario = ?");
+$verificar->bind_param("ii", $id, $usuario_id);
+$verificar->execute();
+$resultado = $verificar->get_result();
+
+if ($resultado->num_rows !== 1) {
+    echo "Lote no encontrado o no autorizado.";
+    exit();
+}
+
+$loteActual = $resultado->fetch_assoc();
+$rutaImagen = $loteActual['imagen'];
+
+// Si se subió una nueva imagen
+if (!empty($_FILES['imagen']['name'])) {
+    $permitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+    if (!in_array($_FILES['imagen']['type'], $permitidos)) {
+        echo "Formato de imagen no permitido.";
+        exit();
+    }
+
+    $directorio = "img/reses/";
+    $nombreImagen = uniqid() . "_" . basename($_FILES["imagen"]["name"]);
+    $nuevaRuta = $directorio . $nombreImagen;
+
+    if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $nuevaRuta)) {
+        // Eliminar imagen anterior si existe y es diferente
+        if ($rutaImagen && file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+        $rutaImagen = $nuevaRuta;
+    } else {
+        echo "Error al subir la nueva imagen.";
+        exit();
+    }
+}
+
+// Capturar los demás datos
+$edad_promedio   = $_POST['edad_promedio'];
+$peso_promedio   = $_POST['peso_promedio'];
+$cantidad        = intval($_POST['cantidad']);
+$salud_general   = $_POST['salud_general'];
+$alimentacion    = $_POST['alimentacion'];
+$origen          = $_POST['origen'];
+$ubicacion       = $_POST['ubicacion'];
+
+// Validación básica
+if (empty($edad_promedio) || empty($peso_promedio) || empty($salud_general) || empty($alimentacion) || empty($origen) || empty($ubicacion)) {
+    echo "Todos los campos obligatorios deben estar completos.";
+    exit();
+}
+
+// Actualizar en la base de datos
+$sql = "UPDATE lotes SET 
+            edad_promedio = ?, 
+            peso_promedio = ?, 
+            cantidad = ?, 
+            salud_general = ?, 
+            alimentacion = ?, 
+            origen = ?, 
+            ubicacion = ?, 
+            imagen = ? 
+        WHERE id = ? AND id_usuario = ?";
+
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("ssisssssii",
+    $edad_promedio,
+    $peso_promedio,
+    $cantidad,
+    $salud_general,
+    $alimentacion,
+    $origen,
+    $ubicacion,
+    $rutaImagen,
+    $id,
+    $usuario_id
+);
+
+if ($stmt->execute()) {
+    header("Location: mis_publicaciones.php?actualizado=lote");
+
+    exit();
 } else {
-    $sql = "UPDATE lotes SET edad_promedio=?, peso_promedio=?, cantidad=?, alimentacion=?, salud_general=?, ubicacion=?, origen=? WHERE id=? AND id_usuario=?";
-    $params = [$edad_promedio, $peso_promedio, $cantidad, $alimentacion, $vacuna, $ubicacion, $origen, $id, $id_usuario];
+    echo "Error al actualizar: " . $stmt->error;
 }
-
-$stmt = $conn->prepare($sql);
-$stmt->execute($params);
-
-echo "Lote actualizado correctamente. <a href='mis_publicaciones.php'>Volver</a>";
 ?>

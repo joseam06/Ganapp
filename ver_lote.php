@@ -56,6 +56,17 @@ if (!$lote) {
   <h5 class="text-primary">Información del Vendedor</h5>
   <p><strong>Nombre:</strong> <?= $lote['nombre'] ?></p>
   <p><strong>Correo:</strong> <?= $lote['correo'] ?></p>
+    
+  <hr>
+<form method="POST" action="agregar_carrito.php">
+  <input type="hidden" name="res_id" value="lote-<?= $lote['id'] ?>">
+  <?php if (in_array('lote-' . $lote['id'], $_SESSION['carrito'] ?? [])): ?>
+    <button type="button" class="btn btn-secondary w-100" disabled>Ya en el carrito</button>
+  <?php else: ?>
+    <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+  <?php endif; ?>
+</form>
+
 </div>
 
   </div>

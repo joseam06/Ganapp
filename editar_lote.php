@@ -1,29 +1,33 @@
 <?php
 session_start();
-require 'db.php';
-include 'navbar.php';
-
-if (!isset($_SESSION['id_usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.html");
-    exit;
+    exit();
 }
 
-$id_usuario = $_SESSION['id_usuario'];
-$id_lote = $_GET['id'] ?? null;
+include 'db.php';
 
-if (!$id_lote) {
-    echo "ID no proporcionado.";
-    exit;
+if (!isset($_GET['id'])) {
+    echo "ID de lote no especificado.";
+    exit();
 }
 
-$stmt = $conn->prepare("SELECT * FROM lotes WHERE id = ? AND id_usuario = ?");
-$stmt->execute([$id_lote, $id_usuario]);
-$lote = $stmt->fetch();
+$id = intval($_GET['id']);
+$usuario_id = $_SESSION['usuario_id'];
 
-if (!$lote) {
-    echo "No tienes permiso para editar este lote.";
-    exit;
+// Obtener los datos del lote solo si pertenece al usuario actual
+$sql = "SELECT * FROM lotes WHERE id = ? AND id_usuario = ?";
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("ii", $id, $usuario_id);
+$stmt->execute();
+$resultado = $stmt->get_result();
+
+if ($resultado->num_rows !== 1) {
+    echo "Lote no encontrado o no autorizado.";
+    exit();
 }
+
+$lote = $resultado->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -32,39 +36,66 @@ if (!$lote) {
     <meta charset="UTF-8">
     <title>Editar Lote - GanApp</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="card-container">
-        <h2>Editar Lote</h2>
-        <form action="actualizar_lote.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="id" value="<?= $lote['id'] ?>">
 
-            <label>Rango de Edad</label>
-            <input type="text" name="edad_promedio" value="<?= $lote['edad_promedio'] ?>" required>
+<?php include 'navbar.php'; ?>
 
-            <label>Peso Promedio</label>
-            <input type="text" name="peso_promedio" value="<?= $lote['peso_promedio'] ?>" required>
+<div class="container mt-5" style="max-width: 600px;">
+    <h2 class="mb-4 text-center">Editar Lote</h2>
 
-            <label>Cantidad</label>
-            <input type="number" name="cantidad" value="<?= $lote['cantidad'] ?>" required>
+    <form action="actualizar_lote.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<?php echo $lote['id']; ?>">
 
-            <label>Alimentación</label>
-            <textarea name="alimentacion" required><?= $lote['alimentacion'] ?></textarea>
+        <div class="mb-3">
+            <label for="edad_promedio" class="form-label">Rango de Edad</label>
+            <input type="text" name="edad_promedio" class="form-control" required value="<?php echo $lote['edad_promedio']; ?>">
+        </div>
 
-            <label>Vacunas</label>
-            <textarea name="vacuna" required><?= $lote['salud_general'] ?></textarea>
+        <div class="mb-3">
+            <label for="peso_promedio" class="form-label">Peso Promedio</label>
+            <input type="text" name="peso_promedio" class="form-control" required value="<?php echo $lote['peso_promedio']; ?>">
+        </div>
 
-            <label>Zona / Ubicación</label>
-            <input type="text" name="ubicacion" value="<?= $lote['ubicacion'] ?>" required>
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad de reses</label>
+            <input type="number" name="cantidad" class="form-control" required value="<?php echo $lote['cantidad']; ?>">
+        </div>
 
-            <label>Origen</label>
-            <input type="text" name="origen" value="<?= $lote['origen'] ?>" required>
+        <div class="mb-3">
+            <label for="salud_general" class="form-label">Salud General</label>
+            <textarea name="salud_general" class="form-control" required><?php echo $lote['salud_general']; ?></textarea>
+        </div>
 
-            <label>Imagen (opcional)</label>
-            <input type="file" name="imagen" accept="image/*">
+        <div class="mb-3">
+            <label for="alimentacion" class="form-label">Alimentación</label>
+            <textarea name="alimentacion" class="form-control" required><?php echo $lote['alimentacion']; ?></textarea>
+        </div>
 
-            <button type="submit">Actualizar Lote</button>
-        </form>
-    </div>
+        <div class="mb-3">
+            <label for="origen" class="form-label">Origen</label>
+            <textarea name="origen" class="form-control" required><?php echo $lote['origen']; ?></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="ubicacion" class="form-label">Zona / Ubicación</label>
+            <input type="text" name="ubicacion" class="form-control" required value="<?php echo $lote['ubicacion']; ?>">
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Cambiar imagen (opcional)</label>
+            <input type="file" name="imagen" class="form-control" accept="image/*">
+            <div class="mt-2">
+                <small>Imagen actual:</small><br>
+                <img src="<?php echo $lote['imagen']; ?>" alt="Imagen actual" class="img-fluid" style="max-height: 200px;">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Actualizar Lote</button>
+        <a href="mis_publicaciones.php" class="btn btn-secondary w-100 mt-2">Cancelar</a>
+    </form>
+</div>
+
 </body>
 </html>
