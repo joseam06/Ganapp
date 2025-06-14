@@ -12,10 +12,11 @@ $facturas = $conexion->query("SELECT * FROM facturas WHERE id_usuario = $id_usua
 <head>
     <meta charset="UTF-8">
     <title>Mis Compras - GanApp</title>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
+<?php include 'navbar.php'; ?>
 <div class="container mt-5">
     <h2 class="text-center mb-4">Mis Compras</h2>
 

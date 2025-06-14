@@ -121,6 +121,16 @@ if (!isset($_SESSION['usuario_id'])) {
       </div>
     </div>
 
+    <div class="mb-3">
+    <div id="precio_sugerido" class="alert alert-info" style="display: none;"></div>
+  </div>
+
+  <div class="mb-3">
+  <label for="precio_final" class="form-label">Precio final de venta ($)</label>
+  <input type="number" step="100" name="precio_final" id="precio_final" class="form-control" required>
+  <div class="form-text">Puedes usar el precio sugerido o ingresar uno personalizado.</div>
+</div>
+
     <button type="submit" class="btn btn-success w-100">Guardar</button>
   </form>
 </div>
@@ -195,6 +205,53 @@ function mostrarCampos() {
     campoSalud.style.display = "block";
     camposLote.style.display = "none";
   }
+}
+
+['clasificacion', 'tipo', 'peso', 'edad', 'cantidad'].forEach(id => {
+  const campo = document.getElementById(id);
+  if (campo) {
+    campo.addEventListener('input', obtenerPrecioSugerido);
+  }
+});
+
+function obtenerPrecioSugerido() {
+  const clasificacion = document.getElementById('clasificacion').value;
+  const tipo = document.getElementById('tipo').value;
+  const peso = parseFloat(document.getElementById('peso').value);
+  const edad = parseFloat(document.getElementById('edad').value);
+  const tipo_publicacion = document.getElementById('tipo_publicacion').value;
+  const cantidadInput = document.getElementById('cantidad');
+  const cantidad = cantidadInput && tipo_publicacion === 'lote' ? parseInt(cantidadInput.value) : 1;
+
+  if (!clasificacion || !tipo || isNaN(peso) || isNaN(edad)) {
+    document.getElementById('precio_sugerido').style.display = 'none';
+    return;
+  }
+
+  const datos = new FormData();
+  datos.append('clasificacion', clasificacion);
+  datos.append('tipo', tipo);
+  datos.append('peso', peso);
+  datos.append('edad', edad);
+  if (tipo_publicacion === 'lote') {
+    datos.append('cantidad', cantidad);
+  }
+
+  fetch('calcular_valor.php', {
+    method: 'POST',
+    body: datos
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.valor_unitario) {
+      const mensaje = tipo_publicacion === 'lote'
+        ? `💡 Precio sugerido total: $${data.valor_total.toLocaleString()} (por ${data.cantidad} reses - unidad: $${data.valor_unitario.toLocaleString()})`
+        : `💡 Precio sugerido: $${data.valor_unitario.toLocaleString()} (basado en tipo ${tipo}, ${clasificacion}, ${peso} kg, ${edad} años)`;
+      const contenedor = document.getElementById('precio_sugerido');
+      contenedor.textContent = mensaje;
+      contenedor.style.display = 'block';
+    }
+  });
 }
 
 </script>
