@@ -66,7 +66,7 @@ $usuario_id = $_SESSION['usuario_id'];
         </a>
         <div class="card-body">
           <h5 class="card-title text-success">Res individual</h5>
-          <p class="card-text"><strong>Edad:</strong> <?= $res['edad'] ?></p>
+          <p class="card-text"><strong>Edad:</strong> <?= $res['edad'] ?> años</p>
           <p class="card-text"><strong>Peso:</strong> <?= $res['peso'] ?></p>
           <p class="card-text"><strong>Ubicación:</strong> <?= $res['ubicacion'] ?></p>
           <div class="d-flex justify-content-between mt-3">
@@ -98,7 +98,7 @@ $usuario_id = $_SESSION['usuario_id'];
         </a>
         <div class="card-body">
           <h5 class="card-title text-primary">Lote de <?= $lote['cantidad'] ?> reses</h5>
-          <p class="card-text"><strong>Edad promedio:</strong> <?= $lote['edad_promedio'] ?></p>
+          <p class="card-text"><strong>Edad promedio:</strong> <?= $lote['edad_promedio'] ?> años</p>
           <p class="card-text"><strong>Peso promedio:</strong> <?= $lote['peso_promedio'] ?></p>
           <p class="card-text"><strong>Ubicación:</strong> <?= $lote['ubicacion'] ?></p>
           <div class="d-flex justify-content-between mt-3">

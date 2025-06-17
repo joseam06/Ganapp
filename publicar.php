@@ -78,13 +78,26 @@ if (!isset($_SESSION['usuario_id'])) {
       </div>
 
       <div class="mb-3" id="origen_genetico_extra" style="display:none;">
-        <label for="origen" class="form-label">Detalle del origen genético</label>
+        <label for="origen" class="form-label">Ingrese los antecedentes genéticos (Nombres del padre, de la madre y si lo desea agregue más informacion de estos):</label>
         <textarea name="origen" id="origen" class="form-control"></textarea>
       </div>
 
       <div class="mb-3" id="campo-salud">
         <label for="salud" class="form-label">Estado de Salud</label>
         <input type="text" name="salud" id="salud" class="form-control" required>
+    </div>
+    
+ <!-- Campos solo para lote -->
+    <div id="campos-lote" style="display:none;">
+        <div class="mb-3">
+        <label for="salud_general" class="form-label">Salud General del Lote</label>
+        <input type="text" name="salud_general" id="salud_general" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="cantidad" class="form-label">Cantidad de reses</label>
+        <input type="number" name="cantidad" id="cantidad" class="form-control">
+      </div>
     </div>
 
       <div class="mb-3">
@@ -106,22 +119,8 @@ if (!isset($_SESSION['usuario_id'])) {
         <label for="imagen" class="form-label">Imagen</label>
         <input type="file" name="imagen" class="form-control" accept="image/*" required>
       </div>
-    </div>
-
-    <!-- Campos solo para lote -->
-    <div id="campos-lote" style="display:none;">
-        <div class="mb-3">
-        <label for="salud_general" class="form-label">Salud General del Lote</label>
-        <input type="text" name="salud_general" id="salud_general" class="form-control" required>
-      </div>
 
       <div class="mb-3">
-        <label for="cantidad" class="form-label">Cantidad de reses</label>
-        <input type="number" name="cantidad" id="cantidad" class="form-control">
-      </div>
-    </div>
-
-    <div class="mb-3">
     <div id="precio_sugerido" class="alert alert-info" style="display: none;"></div>
   </div>
 
@@ -130,8 +129,13 @@ if (!isset($_SESSION['usuario_id'])) {
   <input type="number" step="100" name="precio_final" id="precio_final" class="form-control" required>
   <div class="form-text">Puedes usar el precio sugerido o ingresar uno personalizado.</div>
 </div>
+<button type="submit" class="btn btn-success w-100">Guardar</button>
+    </div>
 
-    <button type="submit" class="btn btn-success w-100">Guardar</button>
+   
+    
+
+    
   </form>
 </div>
 
@@ -273,7 +277,7 @@ function obtenerPrecioSugerido() {
     if (data.valor_unitario) {
       const mensaje = tipo_publicacion === 'lote'
         ? `💡 Precio sugerido total: $${data.valor_total.toLocaleString()} (por ${data.cantidad} reses - unidad: $${data.valor_unitario.toLocaleString()})`
-        : `💡 Precio sugerido: $${data.valor_unitario.toLocaleString()} (basado en tipo ${tipo}, ${clasificacion}, ${peso} kg, ${edad} años)`;
+        : `💡 Precio sugerido: $${data.valor_unitario.toLocaleString()} (basado en tipo ${tipo}, es de ${clasificacion}, ${peso} kg, ${edad} años)`;
       const contenedor = document.getElementById('precio_sugerido');
       contenedor.textContent = mensaje;
       contenedor.style.display = 'block';

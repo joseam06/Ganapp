@@ -45,8 +45,14 @@ if (!$res) {
     <div class="card-body">
       <p><strong>Clasificación:</strong> <?= ucfirst($res['clasificacion']) ?></p>
       <p><strong>Tipo:</strong> <?= $res['tipo'] ?></p>
-      <p><strong>Origen:</strong> <?= $res['origen_tipo'] ?></p>
-      <p><strong>Edad:</strong> <?= $res['edad'] ?></p>
+     
+      <p><strong>Origen:</strong> 
+       <?= $res['origen_tipo'] ?>
+       <?php if ($res['origen_tipo'] === 'genetico' && !empty($res['detalles_origen'])): ?>
+      <br><em>Detalles de origen:</em> <?= htmlspecialchars($res['detalles_origen']) ?>
+      <?php endif; ?>
+
+      <p><strong>Edad:</strong> <?= $res['edad'] ?> años</p>
       <p><strong>Peso:</strong> <?= $res['peso'] ?></p>
       <p><strong>Raza:</strong> <?= $res['raza'] ?></p>
       <p><strong>Alimentación:</strong> <?= $res['alimentacion'] ?></p>

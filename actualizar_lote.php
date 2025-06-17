@@ -61,6 +61,8 @@ $salud_general   = $_POST['salud_general'];
 $alimentacion    = $_POST['alimentacion'];
 $origen          = $_POST['origen'];
 $ubicacion       = $_POST['ubicacion'];
+$precio = isset($_POST['precio']) ? floatval($_POST['precio']) : 0;
+
 
 // Validación básica
 if (empty($edad_promedio) || empty($peso_promedio) || empty($salud_general) || empty($alimentacion) || empty($origen) || empty($ubicacion)) {
@@ -70,19 +72,21 @@ if (empty($edad_promedio) || empty($peso_promedio) || empty($salud_general) || e
 
 // Actualizar en la base de datos
 $sql = "UPDATE lotes SET 
-            edad_promedio = ?, 
-            peso_promedio = ?, 
-            cantidad = ?, 
-            salud_general = ?, 
-            alimentacion = ?, 
-            origen = ?, 
-            ubicacion = ?, 
-            imagen = ? 
-        WHERE id = ? AND id_usuario = ?";
+    edad_promedio = ?, 
+    peso_promedio = ?, 
+    cantidad = ?, 
+    salud_general = ?, 
+    alimentacion = ?, 
+    origen = ?, 
+    ubicacion = ?, 
+    imagen = ?, 
+    precio = ?
+    WHERE id = ? AND id_usuario = ?";
 
 $stmt = $conexion->prepare($sql);
-$stmt->bind_param("ssisssssii",
-    $edad_promedio,
+$stmt->bind_param("ssisssssdi",
+
+     $edad_promedio,
     $peso_promedio,
     $cantidad,
     $salud_general,
@@ -90,6 +94,7 @@ $stmt->bind_param("ssisssssii",
     $origen,
     $ubicacion,
     $rutaImagen,
+    $precio,
     $id,
     $usuario_id
 );

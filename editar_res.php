@@ -91,7 +91,7 @@ if (!$res) {
 
     <div class="mb-3">
       <label>Detalle de Origen</label>
-      <textarea name="origen" class="form-control"><?= $res['origen'] ?></textarea>
+      <textarea name="origen" class="form-control"><?= $res['detalles_origen'] ?></textarea>
     </div>
 
     <div class="mb-3">
@@ -115,12 +115,26 @@ if (!$res) {
     </div>
 
     <div class="mb-3">
+    <label for="precio_final" class="form-label">Precio de la Res ($)</label>
+    <input type="number" name="precio_final" class="form-control" required value="<?= $res['precio'] ?>">
+</div>
+
+
+    <div class="mb-3">
       <label>Imagen (opcional)</label>
       <input type="file" name="imagen" class="form-control" accept="image/*">
+      <?php if (!empty($res['imagen'])): ?>
+  <div class="mt-2">
+    <small>Imagen actual:</small><br>
+    <img src="<?= $res['imagen'] ?>" alt="Imagen actual" class="img-fluid" style="max-height: 200px;">
+  </div>
+<?php endif; ?>
       <small>Si no seleccionas imagen, se mantendrá la actual.</small>
     </div>
 
     <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+    <a href="mis_publicaciones.php" class="btn btn-secondary w-100 mt-2">Cancelar</a>
+
   </form>
 </div>
 </body>

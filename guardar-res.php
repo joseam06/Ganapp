@@ -29,6 +29,7 @@ $alimentacion = $_POST['alimentacion'] ?? '';
 $ubicacion = $_POST['ubicacion'] ?? '';
 $vacunas = $_POST['vacunas'] ?? '';
 $origen_tipo = $_POST['origen_tipo'] ?? '';
+$detalles_origen = $_POST['origen'] ?? '';
 $salud = $_POST['salud'] ?? '';
 $salud_general = $_POST['salud_general'] ?? '';
 $cantidad = isset($_POST['cantidad']) ? intval($_POST['cantidad']) : null;
@@ -68,8 +69,8 @@ if ($tipo_publicacion === 'lote') {
 $sql = "INSERT INTO reses (
     edad, vacunas, salud, peso, alimentacion,
     ubicacion, imagen, id_usuario,
-    clasificacion, tipo, raza, origen_tipo, precio
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    clasificacion, tipo, raza, origen_tipo, detalles_origen, precio
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conexion->prepare($sql);
 if (!$stmt) {
@@ -79,7 +80,7 @@ if (!$stmt) {
 
 
 $stmt->bind_param(
-    "sssssssissssd",
+    "sssssssisssssd",
     $edad,
     $vacunas,
     $salud,
@@ -92,6 +93,7 @@ $stmt->bind_param(
     $tipo,
     $raza,
     $origen_tipo,
+    $detalles_origen,
     $precio_final
 );
 

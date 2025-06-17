@@ -18,6 +18,7 @@ $stmt = $conexion->prepare($sql);
 $stmt->bind_param("ii", $id, $_SESSION['usuario_id']);
 $stmt->execute();
 $res = $stmt->get_result()->fetch_assoc();
+$precio = isset($_POST['precio_final']) ? floatval($_POST['precio_final']) : 0;
 
 if (!$res) {
     echo "No autorizado o no encontrado.";
@@ -39,25 +40,27 @@ if (!empty($_FILES["imagen"]["name"])) {
 // Actualizar la res
 $sql = "UPDATE reses SET
     clasificacion = ?, tipo = ?, edad = ?, peso = ?, raza = ?,
-    origen_tipo = ?, origen = ?, alimentacion = ?, ubicacion = ?,
-    vacunas = ?, salud = ?, imagen = ?
+    origen_tipo = ?, detalles_origen = ?, alimentacion = ?, ubicacion = ?,
+    vacunas = ?, salud = ?, imagen = ?, precio = ?
     WHERE id = ? AND id_usuario = ?";
+
 
 $stmt = $conexion->prepare($sql);
 $stmt->bind_param(
-    "sssssssssssiii",
+    "ssssssssssssdii",
     $_POST['clasificacion'],
     $_POST['tipo'],
     $_POST['edad'],
     $_POST['peso'],
     $_POST['raza'],
     $_POST['origen_tipo'],
-    $_POST['origen'],
+    $_POST['detalles_origen'],
     $_POST['alimentacion'],
     $_POST['ubicacion'],
     $_POST['vacunas'],
     $_POST['salud'],
     $rutaImagen,
+    $precio,
     $id,
     $_SESSION['usuario_id']
 );

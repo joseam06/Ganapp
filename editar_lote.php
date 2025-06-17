@@ -84,6 +84,12 @@ $lote = $resultado->fetch_assoc();
         </div>
 
         <div class="mb-3">
+        <label for="precio" class="form-label">Precio del Lote ($)</label>
+        <input type="number" name="precio" class="form-control" required value="<?php echo $lote['precio']; ?>">
+        </div>
+
+
+        <div class="mb-3">
             <label for="imagen" class="form-label">Cambiar imagen (opcional)</label>
             <input type="file" name="imagen" class="form-control" accept="image/*">
             <div class="mt-2">
@@ -91,6 +97,8 @@ $lote = $resultado->fetch_assoc();
                 <img src="<?php echo $lote['imagen']; ?>" alt="Imagen actual" class="img-fluid" style="max-height: 200px;">
             </div>
         </div>
+
+        
 
         <button type="submit" class="btn btn-primary w-100">Actualizar Lote</button>
         <a href="mis_publicaciones.php" class="btn btn-secondary w-100 mt-2">Cancelar</a>
