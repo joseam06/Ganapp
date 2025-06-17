@@ -9,6 +9,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $carrito = $_SESSION['carrito'] ?? [];
 $tiene_productos = !empty($carrito);
+$total_pagar = 0;
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +54,9 @@ $tiene_productos = !empty($carrito);
                 }
 
                 if ($producto) {
+                    $precio = $producto['precio'] ?? 0;
+                    $total_pagar += $precio;
+
                     echo "<div class='col-md-4'>";
                     echo "<div class='card mb-4 shadow-sm'>";
                     echo "<img src='{$producto['imagen']}' class='card-img-top' style='height: 200px; object-fit: cover;'>";
@@ -63,8 +67,8 @@ $tiene_productos = !empty($carrito);
                     echo "</div>";
 
                     if ($tipo === 'res') {
-                        echo "<p>Edad: {$producto['edad']}</p>";
-                        echo "<p>Peso: {$producto['peso']}</p>";
+                        echo "<p>Edad: {$producto['edad']} años</p>";
+                        echo "<p>Peso: {$producto['peso']} </p>";
                         echo "<p>Raza: {$producto['raza']}</p>";
                         echo "<p>Clasificación: {$producto['clasificacion']} ({$producto['tipo']})</p>";
                     } else {
@@ -75,6 +79,7 @@ $tiene_productos = !empty($carrito);
                     }
 
                     echo "<p>Ubicación: {$producto['ubicacion']}</p>";
+                    echo "<p class='fw-bold text-success'>Precio: $" . number_format($precio, 0, ',', '.') . "</p>";
                     echo "</div></div></div>";
                 }
             }
@@ -82,7 +87,11 @@ $tiene_productos = !empty($carrito);
         </div>
     </form>
 
-    <div class="text-center mt-4">
+    <div class="text-end mt-3">
+        <h4>Total a pagar: <span class="text-primary fw-bold">$<?= number_format($total_pagar, 0, ',', '.') ?></span></h4>
+    </div>
+
+    <div class="text-center mt-3">
         <a href="generar_factura.php" class="btn btn-primary">Generar Factura</a>
     </div>
 

@@ -94,6 +94,7 @@ if (!isset($_SESSION['usuario_id'])) {
     <?php endwhile; ?>
   </div>
 </div>
+
 <script>
   document.getElementById('busquedaReses').addEventListener('input', function () {
     const query = this.value.toLowerCase();
