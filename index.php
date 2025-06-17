@@ -50,6 +50,7 @@ if (!isset($_SESSION['usuario_id'])) {
           <p class="card-text"><strong>Edad:</strong> <?= $res['edad'] ?></p>
           <p class="card-text"><strong>Peso:</strong> <?= $res['peso'] ?></p>
           <p class="card-text"><strong>Ubicación:</strong> <?= $res['ubicacion'] ?></p>
+          <p><strong>Precio:</strong> <?= $res['precio'] ?></p>
            <form method="POST" action="agregar_carrito.php">
   <input type="hidden" name="res_id" value="res-<?= $res['id'] ?>">
   <?php if (in_array('res-' . $res['id'], $_SESSION['carrito'])): ?>
@@ -77,6 +78,7 @@ if (!isset($_SESSION['usuario_id'])) {
           <p class="card-text"><strong>Edad promedio:</strong> <?= $lote['edad_promedio'] ?></p>
           <p class="card-text"><strong>Peso promedio:</strong> <?= $lote['peso_promedio'] ?></p>
           <p class="card-text"><strong>Ubicación:</strong> <?= $lote['ubicacion'] ?></p>
+          <p><strong>Precio:</strong> <?= $lote['precio'] ?></p>
           <form method="POST" action="agregar_carrito.php">
             <input type="hidden" name="res_id" value="lote-<?= $lote['id'] ?>">
           <?php if (in_array('lote-' . $lote['id'], $_SESSION['carrito'])): ?>

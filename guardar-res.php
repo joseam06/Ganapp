@@ -29,18 +29,18 @@ $alimentacion = $_POST['alimentacion'] ?? '';
 $ubicacion = $_POST['ubicacion'] ?? '';
 $vacunas = $_POST['vacunas'] ?? '';
 $origen_tipo = $_POST['origen_tipo'] ?? '';
-$origen = $_POST['origen'] ?? '';
 $salud = $_POST['salud'] ?? '';
 $salud_general = $_POST['salud_general'] ?? '';
 $cantidad = isset($_POST['cantidad']) ? intval($_POST['cantidad']) : null;
+$precio_final = isset($_POST['precio_final']) ? floatval($_POST['precio_final']) : 0;
 
 if ($tipo_publicacion === 'lote') {
     // Guardar lote
     $sql = "INSERT INTO lotes (
         imagen, cantidad, edad_promedio, peso_promedio,
-        salud_general, alimentacion, origen, ubicacion,
-        id_usuario, fecha_publicacion, vendido
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0)";
+        salud_general, alimentacion, ubicacion,
+        id_usuario, fecha_publicacion, vendido, precio
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0, ?)";
 
     $stmt = $conexion->prepare($sql);
     if (!$stmt) {
@@ -49,25 +49,26 @@ if ($tipo_publicacion === 'lote') {
     }
 
     $stmt->bind_param(
-        "sissssssi",
-        $rutaImagen,
-        $cantidad,
-        $edad,
-        $peso,
-        $salud_general,
-        $alimentacion,
-        $origen,
-        $ubicacion,
-        $usuario_id
-    );
+    "sisssssid",
+    $rutaImagen,
+    $cantidad,
+    $edad,
+    $peso,
+    $salud_general,
+    $alimentacion,
+    $ubicacion,
+    $usuario_id,
+    $precio_final
+);
+
 } else {
     // Guardar res individual
    $raza = $_POST['raza'] ?? '';
 
 $sql = "INSERT INTO reses (
     edad, vacunas, salud, peso, alimentacion,
-    origen, ubicacion, imagen, id_usuario,
-    clasificacion, tipo, raza, origen_tipo
+    ubicacion, imagen, id_usuario,
+    clasificacion, tipo, raza, origen_tipo, precio
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conexion->prepare($sql);
@@ -76,21 +77,22 @@ if (!$stmt) {
     exit();
 }
 
+
 $stmt->bind_param(
-    "ssssssssissss",
+    "sssssssissssd",
     $edad,
     $vacunas,
     $salud,
     $peso,
     $alimentacion,
-    $origen,
     $ubicacion,
     $rutaImagen,
     $usuario_id,
     $clasificacion,
     $tipo,
     $raza,
-    $origen_tipo
+    $origen_tipo,
+    $precio_final
 );
 
 }

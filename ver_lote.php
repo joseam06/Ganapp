@@ -52,6 +52,7 @@ if (!$lote) {
   <p><strong>Alimentación:</strong> <?= $lote['alimentacion'] ?></p>
   <p><strong>Origen:</strong> <?= $lote['origen'] ?></p>
   <p><strong>Ubicación:</strong> <?= $lote['ubicacion'] ?></p>
+  <p><strong>Precio:</strong> <?= $lote['precio'] ?></p>
   <hr>
   <h5 class="text-primary">Información del Vendedor</h5>
   <p><strong>Nombre:</strong> <?= $lote['nombre'] ?></p>

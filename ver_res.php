@@ -45,6 +45,7 @@ if (!$res) {
     <div class="card-body">
       <p><strong>Clasificación:</strong> <?= ucfirst($res['clasificacion']) ?></p>
       <p><strong>Tipo:</strong> <?= $res['tipo'] ?></p>
+      <p><strong>Origen:</strong> <?= $res['origen_tipo'] ?></p>
       <p><strong>Edad:</strong> <?= $res['edad'] ?></p>
       <p><strong>Peso:</strong> <?= $res['peso'] ?></p>
       <p><strong>Raza:</strong> <?= $res['raza'] ?></p>
@@ -52,6 +53,7 @@ if (!$res) {
       <p><strong>Vacunas:</strong> <?= $res['vacunas'] ?></p>
       <p><strong>Estado de Salud:</strong> <?= $res['salud'] ?></p>
       <p><strong>Ubicación:</strong> <?= $res['ubicacion'] ?></p>
+      <p><strong>Precio:</strong> <?= $res['precio'] ?></p>
       <hr>
       <h5 class="text-primary">Información del Vendedor</h5>
       <p><strong>Nombre:</strong> <?= $res['nombre'] ?></p>

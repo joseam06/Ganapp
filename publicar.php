@@ -34,29 +34,29 @@ if (!isset($_SESSION['usuario_id'])) {
     </div>
 
     <!-- Clasificación -->
-    <div class="mb-3">
-      <label for="clasificacion" class="form-label">Clasificación</label>
-      <select id="clasificacion" name="clasificacion" class="form-select" onchange="cargarTipos()" required>
-        <option value="">Selecciona</option>
-        <option value="primera">Primera</option>
-        <option value="segunda">Segunda</option>
-      </select>
-    </div>
+<div class="mb-3">
+  <label for="clasificacion" class="form-label">Clasificación</label>
+  <select id="clasificacion" name="clasificacion" class="form-select" required>
+    <option value="">Selecciona</option>
+    <option value="primera">Primera</option>
+    <option value="segunda">Segunda</option>
+  </select>
+</div>
 
-    <!-- Tipo -->
-    <div class="mb-3">
-      <label for="tipo" class="form-label">Tipo</label>
-      <select id="tipo" name="tipo" class="form-select" required>
-        <option value="">Selecciona clasificación primero</option>
-      </select>
-    </div>
+    <!-- Edad (antes) -->
+<div class="mb-3" id="campo-edad">
+  <label for="edad" class="form-label">Edad (años)</label>
+  <input type="number" step="0.1" name="edad" id="edad" class="form-control" required>
+</div>
 
-    <!-- Campos comunes -->
-    <div id="campos-comunes">
-      <div class="mb-3" id="campo-edad">
-        <label for="edad" class="form-label">Edad</label>
-        <input type="text" name="edad" id="edad" class="form-control" required>
-      </div>
+<!-- Tipo (se llenará con restricciones combinadas) -->
+<div class="mb-3">
+  <label for="tipo" class="form-label">Tipo</label>
+  <select id="tipo" name="tipo" class="form-select" required>
+    <option value="">Selecciona clasificación y edad</option>
+  </select>
+</div>
+
 
       <div class="mb-3">
         <label for="peso" class="form-label" id="label-peso">Peso</label>
@@ -136,24 +136,51 @@ if (!isset($_SESSION['usuario_id'])) {
 </div>
 
 <script>
-function cargarTipos() {
-  const clasificacion = document.getElementById("clasificacion").value;
-  const tipoSelect = document.getElementById("tipo");
+document.getElementById('clasificacion').addEventListener('change', cargarTiposFiltrados);
+document.getElementById('edad').addEventListener('input', cargarTiposFiltrados);
+
+function cargarTiposFiltrados() {
+  const clasificacion = document.getElementById('clasificacion').value;
+  const edad = parseFloat(document.getElementById('edad').value);
+  const tipoSelect = document.getElementById('tipo');
+
   tipoSelect.innerHTML = "";
 
-  let tipos = [];
-  if (clasificacion === "primera") {
-    tipos = ["ML", "MC", "TO", "BM", "HL", "HV", "VP", "VE"];
-  } else if (clasificacion === "segunda") {
-    tipos = ["ML", "MC", "HL", "HV", "VP", "VE"];
+  if (!clasificacion || isNaN(edad)) {
+    tipoSelect.innerHTML = "<option value=''>Selecciona clasificación y edad</option>";
+    return;
   }
 
-  tipos.forEach(tipo => {
-    const option = document.createElement("option");
-    option.value = tipo;
-    option.text = tipo;
-    tipoSelect.appendChild(option);
-  });
+  // Tipos por clasificación
+  const tiposPorClasificacion = {
+    'primera': ["ML", "MC", "TO", "BM", "HL", "HV", "VP", "VE"],
+    'segunda': ["ML", "MC", "HL", "HV", "VP", "VE"]
+  };
+
+  // Tipos válidos por edad
+  const tiposValidosPorEdad = [];
+  if (edad >= 0.75 && edad <= 2) tiposValidosPorEdad.push("ML");
+  if (edad >= 3 && edad <= 4) tiposValidosPorEdad.push("MC");
+  if (edad >= 4) tiposValidosPorEdad.push("TO");
+  if (edad >= 3) tiposValidosPorEdad.push("VP");
+  if (edad >= 3.5) tiposValidosPorEdad.push("VE");
+
+  // BM no tiene restricción de edad → solo si clasificación es primera
+  if (clasificacion === "primera") tiposValidosPorEdad.push("BM");
+
+  // Intersección
+  const tiposFinales = tiposPorClasificacion[clasificacion].filter(tipo => tiposValidosPorEdad.includes(tipo));
+
+  if (tiposFinales.length === 0) {
+    tipoSelect.innerHTML = "<option value=''>No hay tipos válidos</option>";
+  } else {
+    tiposFinales.forEach(tipo => {
+      const option = document.createElement("option");
+      option.value = tipo;
+      option.text = tipo;
+      tipoSelect.appendChild(option);
+    });
+  }
 }
 
 function mostrarOrigenGenetico() {
