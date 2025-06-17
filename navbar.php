@@ -12,11 +12,11 @@
     <!-- CENTRO: Menú de navegación centrado -->
     <div class="navbar-center">
       <ul class="navbar-menu">
-        <li><a href="index.php">Inicio</a></li>
-        <li><a href="#funciones">Funciones</a></li>
-        <li><a href="#beneficios">Beneficios</a></li>
-        <li><a href="#objetivo">Objetivo</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#funciones" class="nav-link">Funciones</a></li>
+        <li><a href="#beneficios" class="nav-link">Beneficios</a></li>
+        <li><a href="#objetivo" class="nav-link">Objetivo</a></li>
+        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+
       </ul>
     </div>
 

@@ -76,7 +76,6 @@ $fecha_hora = date('d/m/Y H:i:s', strtotime($factura['fecha_hora']));
           <td>
             <?php if ($row['tipo'] === 'res'): ?>
               <strong>Clasificación:</strong> <?= $row['clasificacion'] ?><br>
-              <strong>Tipo:</strong> <?= $row['tipo'] ?><br>
               <strong>Raza:</strong> <?= $row['raza'] ?><br>
               <strong>Edad:</strong> <?= $row['res_edad'] ?> años<br>
               <strong>Peso:</strong> <?= $row['res_peso'] ?> <br>
